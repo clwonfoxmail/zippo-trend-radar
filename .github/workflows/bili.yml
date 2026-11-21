@@ -1,9 +1,8 @@
 name: Bilibili Hot Radar
 
 on:
-  schedule:
-    # 北京时间 08:05 / 20:05
-    - cron: "5 0,12 * * *"
+  # 定时已关闭：B站采集已并入本机 daily_digest.py（08:10 / 20:10）
+  # 保留手动触发作为备用
   workflow_dispatch:
 
 concurrency:
