@@ -1,0 +1,30 @@
+name: Bilibili Hot Radar
+
+on:
+  schedule:
+    # 北京时间 08:05 / 20:05
+    - cron: "5 0,12 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: bili-radar
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  radar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install deps
+        run: pip install --no-cache-dir requests
+      - name: Run Bilibili radar
+        env:
+          WEWORK_WEBHOOK_URL: ${{ secrets.WEWORK_WEBHOOK_URL }}
+        run: python scripts/bili_radar.py --send
