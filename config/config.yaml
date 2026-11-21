@@ -140,6 +140,28 @@ rss:
     - id: "yahoo-finance"
       name: "雅虎财经"
       url: "https://finance.yahoo.com/news/rssindex"
+      enabled: false                  # 实测持续 403，禁用
+
+    # ── Zippo 设计雷达：垂类源（2026-11-21 实测 200 OK） ──
+    - id: "smzdm"
+      name: "什么值得买"
+      url: "https://post.smzdm.com/feed/"
+      max_age_days: 2
+
+    - id: "dgtle"
+      name: "数字尾巴"
+      url: "https://www.dgtle.com/rss/dgtle.xml"
+      max_age_days: 2
+
+    - id: "ifanr"
+      name: "爱范儿"
+      url: "https://www.ifanr.com/feed"
+      max_age_days: 2
+
+    - id: "sspai"
+      name: "少数派"
+      url: "https://sspai.com/feed"
+      max_age_days: 2
 
     # 自定义源示例
     # - id: "custom-feed"
@@ -159,7 +181,7 @@ rss:
 #   - 默认内置 DeepSeek 搜索引擎，后续也可接入其他搜索服务
 # ===============================================================
 web_search:
-  enabled: false                      # 是否开启联网搜索（true=开启, false=关闭，默认关闭）
+  enabled: true                       # 是否开启联网搜索（true=开启, false=关闭，默认关闭）
   provider: "deepseek"                # 搜索引擎（默认 deepseek，后续可扩展其他引擎）
   queries_file: ""                    # 搜索任务文件（留空默认用 config/search_queries.txt）
                                       # 自定义文件可放到 config/custom/search/ 目录，直接填文件名即可
@@ -174,9 +196,9 @@ web_search:
   freshness_days: 7                   # 只看最近几天发布的内容（如 7=最近 7 天，0=不限制时间）
   dedup_days: 7                       # 几天内搜过的内容不再重复标为"新增"（避免前几天的旧消息反复推送，0=只看当天）
 
-  min_score: 0.5                      # 最低质量分（0.0~1.0，越高越严格，0=不过滤）
-                                      # 0.5 刚好对应 DeepSeek 官方推荐的优质线（原始分 1.5/3.0）
-                                      # 冷门话题搜不出结果时可调低到 0.35，想更严格可调到 0.6
+  min_score: 0.05                     # 最低质量分（0.0~1.0，越高越严格，0=不过滤）
+                                      # ❗实测：score = raw_score / 3，Zippo 这类冷门话题最高仅 0.26
+                                      # 0.05 ≈ raw 0.15 分，能挡掉不相关内容又不误杀
 
   min_authority: -1                   # 网站权威度门槛（-1~4，越高越偏向官网/权威媒体，-1=不限制）
                                       # 关注政策、财经等严肃信息建议设 2 或 3
